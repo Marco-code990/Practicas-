@@ -357,8 +357,66 @@ void Archivo::Finalizar()
 int main()
 {
 	Archivo A;
-	A.InicializarLec();
-	A.LeerA();
+	LSE B;
+	Nodo C;
+	int opc=0;
+	do
+	{
+		system("cls");
+		cout<<"1) Cargar archivo .txt"<<endl;
+		cout<<"2) Insertar Inicio"<<endl;
+		cout<<"3) Insertar final"<<endl;
+		cout<<"4) Borrar Inicio"<<endl;
+		cout<<"5) Borrar Final"<<endl;
+		cout<<"6) Crear archivo .txt"<<endl;
+		cout<<"7) Editar"<<endl;
+		cout<<"8) Imprimir"<<endl;
+		cout<<"9) Salir"<<endl;
+		cout<<"Que opcion desea?: ";cin>>opc;
+		switch(opc)
+		{
+			case 1:
+				A.InicializarLec();
+				A.LeerA();
+				system("pause>null");
+				break;
+			case 2:
+				B.InsertarI(C.ObtieneM(),C.ObtieneSm(),C.ObtieneCa(),C.ObtieneT(),C.ObtieneC(),C.ObtieneMo(),C.ObtieneCi());
+				system("pause>null");
+				break;
+			case 3:
+				B.InsertarF(C.ObtieneM(),C.ObtieneSm(),C.ObtieneCa(),C.ObtieneT(),C.ObtieneC(),C.ObtieneMo(),C.ObtieneCi());
+				system("pause>null");
+				break;
+			case 4:
+				B.BorrarI();
+				system("pause>null");
+				break;
+			case 5:
+				B.BorrarF();
+				system("pause>null");
+				break;
+			case 6:
+				B.Crea_Ar();
+				system("pause>null");
+				break;
+			case 7:
+				B.editar();
+				system("pause>null");
+				break;
+			case 8:
+				B.Imprimir();
+				system("pause>null");
+				break;
+			case 9:
+				cout<<"Pulse cualquier tecla para salir."<<endl;
+				exit(0);
+				break;
+			default:
+				cout<<"Opcion invalida."<<endl;
+				break;
+		}
+	}while(opc!=9);
 	system("pause>null");
 	return 0;
 }
