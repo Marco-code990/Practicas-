@@ -2,8 +2,8 @@
 //  main.cpp
 //  LDE_I_F
 //
-//  Created by Jafeth Alonso Carreón on 4/2/20.
-//  Copyright © 2020 Jafeth Alonso Carreón. All rights reserved.
+//  Created by Jafeth Alonso CarreÃ³n on 4/2/20.
+//  Copyright Â© 2020 Jafeth Alonso CarreÃ³n. All rights reserved.
 //
 
 #include <iostream>
@@ -112,40 +112,39 @@ void LDE::BorrarI()
     }
 }
 void LDE::BorrarF()
-{    if(!Inicio)
+{    
+    if(Inicio==NULL)
     cout<<"Lista Vacia";
     else
-        {
-            if(Inicio==Fin)
-                {
-                    delete Inicio;
-                    Inicio=NULL;
-                    Fin=NULL;
-                }
-            else
-                {
-                    Nodo *Sh;
-                    Sh=Fin->Obtieneant();
-                    Sh->Asignasig(NULL);
-                    Fin->Asignaant(NULL);
-                    delete Fin;
-                    Fin=Sh;
-                }
+    {
+        if(Inicio==Fin)
+        {delete Inicio;
+            Inicio=NULL;
+            Fin=NULL;
         }
+        else
+        {
+          Nodo *Sharys;
+          Sharys=Fin->Obtieneant();
+          Sharys->Asignasig(NULL);
+          Fin->Asignaant(NULL);
+          delete Fin;
+          Fin=Sharys;
+        }
+     }
 }
 
 
 void LDE::Imprimir()
 {
-    if(!Inicio)
+    if(Inicio==NULL)
         cout<<"Lista Vacia"<<endl;
     else
-    {
-        Nodo *Aux=Inicio;
-        while(Aux!=NULL)
+    {Nodo *temp=Inicio;
+        while(temp!=NULL)
         {
-            Aux->Imprimir();
-            Aux=Aux->Obtienesig();
+            temp->Imprimir();
+            temp=temp->Obtienesig();
         }
     }
 }
@@ -154,17 +153,15 @@ void LDE::Imprimir()
 
 void LDE::ImprimirR()
 {
-    if(!Inicio)
+    if(Inicio==NULL)
         cout<<"Lista Vacia"<<endl;
     else
-    {
-        Nodo *Aux=Fin;
-        while(Aux!=NULL)
+    {Nodo *xl=Fin;
+        while(xl!=NULL)
         {
-            Aux->Imprimir();
-            Aux=Aux->Obtieneant();
+            xl->Imprimir();
+            xl=xl->Obtieneant();
         }
-        
     }
 }
 
@@ -326,7 +323,7 @@ int main(int argc, const char * argv[])
                 A.ImprimirR();
                 break;
             default:
-                cout<<"opción salir...";
+                cout<<"opciÃ³n salir...";
                 break;
         }
     }while(opc<9);
