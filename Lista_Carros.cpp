@@ -12,7 +12,7 @@ class Nodo
 		char *M,*Sm,*Ca,*Co,*Tr;
 		Nodo *sig;
 	public:
-		Nodo();
+		Nodo(char*,char*,char*,char*,char*,int,int);
 		void Asignasig(Nodo *);
 		void Imprimir();
 		void Leer();
@@ -24,23 +24,25 @@ class Nodo
 		char *ObtieneT();
 		char *ObtieneC();
 		Nodo *ObtieneSig();
-		~Nodo()
-		{
-			M=new char[6];
-			memset(M,'-',5);
-			Sm=new char[6];
-			memset(Sm,'-',5);
-			Mo=0;
-			Ca=new char[6];
-			memset(Ca,'-',5);
-			cil=0;
-			Tr=new char[6];
-			memset(Tr,'-',5);
-			Co=new char[6];
-			memset(Co,'-',5);
-		}
+		Nodo();
+		
 		
 };
+Nodo::Nodo(char *Mr,char *S,char *Cat,char *T,char *Col,int A,int C)
+{	Mo=A;
+	cil=C;	
+	M=new char[strlen(Mr)+1];
+	strcpy(M,Mr);
+	Sm=new char[strlen(S)+1];
+	strcpy(Sm,S);
+	Ca=new char[strlen(Cat)+1];
+	strcpy(Ca,Cat);
+	Co=new char[strlen(Col)+1];
+	strcpy(Co,Col);
+	Tr=new char[strlen(T)+1];
+	strcpy(Tr,T);
+	sig=NULL;
+}
 Nodo::Nodo()
 {
 	M=new char[6];
@@ -55,6 +57,7 @@ Nodo::Nodo()
 	memset(Tr,'-',5);
 	Co=new char[6];
 	memset(Co,'-',5);
+		
 }
 void Nodo::Asignasig(Nodo *x)
 {
@@ -67,6 +70,7 @@ void Nodo::Leer()
 	cout<<"Coloque la marca: "<<endl;cin>>Ma;
 	M=new char[strlen(Ma)+1];
 	strcpy(M,Ma);
+	fflush(stdin);
 	cout<<"Coloque la sub-marca: "<<endl;scanf("%[^\n]",&S);
 	Sm=new char[strlen(S)+1];
 	strcpy(Sm,S);
@@ -75,6 +79,7 @@ void Nodo::Leer()
 	Ca=new char[strlen(C)+1];
 	strcpy(Ca,C);
 	cout<<"Coloque el numero de cilindros: "<<endl;cin>>cil;
+	fflush(stdin);
 	cout<<"Coloque la transmision: "<<endl;scanf("%[^\n]",&T);
 	Tr=new char[strlen(T)+1];
 	strcpy(Tr,T);
@@ -84,7 +89,7 @@ void Nodo::Leer()
 }
 void Nodo::Imprimir()
 {
-	cout<<" "<<this->M<<" "<<this->Sm<<" "<<this->Mo<<" "<<this->Ca<<" "<<this->cil<<" "<<this->Tr<<" "<<this->Co;
+	cout<<"\t"<<this->M<<"\t"<<this->Sm<<"\t"<<this->Mo<<"\t"<<this->Ca<<"\t"<<this->cil<<"\t"<<this->Tr<<"\t"<<this->Co<<endl;
 }
 char* Nodo::ObtieneM()
 {
@@ -131,6 +136,10 @@ class LSE
 		int Contar();
 		void editar();
 		void Crea_Ar();
+		void Crea_Am(char*);
+		void Crea_Aac(int,int);
+		Nodo *Buscar(char*);
+		Nodo *BuscarN(int);
 };
 void LSE::InsertarI(char *M,char *Sm,char *Co,char *Tr,char *Ca,int C,int A)
 {
@@ -141,8 +150,8 @@ void LSE::InsertarI(char *M,char *Sm,char *Co,char *Tr,char *Ca,int C,int A)
 	else
 	{
 		Nodo *helpx3=new Nodo(M,Sm,Co,Tr,Ca,C,A);
-        	helpx3->Asignasig(Inicio);
-        	Inicio=helpx3;
+        helpx3->Asignasig(Inicio);
+        Inicio=helpx3;
 	}
 }
 void LSE::InsertarF(char *M,char *Sm,char *Co,char *Tr,char *Ca,int C,int A)
@@ -180,6 +189,7 @@ void LSE::BorrarI()
 			hay->Asignasig(NULL);
 			delete hay;
 		}
+		cout<<"Dato borrado."<<endl;
 	}
 }
 void LSE::BorrarF()
@@ -207,6 +217,7 @@ void LSE::BorrarF()
 			Sh->Asignasig(NULL);
 			delete Ad;
 		}
+		cout<<"Dato borrado."<<endl;
 	}
 }
 int LSE::Contar()
@@ -229,7 +240,8 @@ return ESCA;
 void LSE::Crea_Ar()
 {
 	ofstream M,A,C;
-	int opc=0;
+	char m[15];
+	int opc=0,x;
 	do
 	{
 		system("cls");
@@ -237,63 +249,141 @@ void LSE::Crea_Ar()
 		cout<<"2) Por anio de modelo"<<endl;
 		cout<<"3) Por numero de cilindros"<<endl;
 		cout<<"Teclee el numero del archivo que deseea crear: ";cin>>opc;
-	}while(opc<1||opc>3);
-	if(opc==1)
-	{
-		char *n;
-		cout<<"Coloque la marca de los autos: ";cin>>n;
-		n=new char[strlen(n)+1];
-		Nodo *xl=Inicio;
-		M.open("F:/Autos_por_marcas.txt");
-		while(xl!=NULL)
+		switch(opc)
 		{
-			if(strcmp(n,xl->ObtieneM())==0)
-			{
-				M<<xl->ObtieneM()<<"\t"<<xl->ObtieneSm()<<"\t"<<xl->ObtieneMo()<<"\t"<<xl->ObtieneCa()<<"\t"<<xl->ObtieneCi()<<"\t"<<xl->ObtieneT()<<"\t"<<xl->ObtieneC()<<endl;
-				xl=xl->ObtieneSig();
-			}
+			case 1:
+				fflush(stdin);
+				cout<<"Coloque la marca de los autos: ";cin.getline(m,14);
+				Crea_Am(m);
+				exit(0);
+				break;
+			case 2:
+				cout<<"Coloque el anio de los autos: ";cin>>x;
+				Crea_Aac(x,opc);
+				exit(0);
+				break;
+			case 3:
+				cout<<"Coloque el numero de cilindros: ";cin>>x;
+				Crea_Aac(x,opc);
+				exit(0);
+				break;
+			default:
+				cout<<"Opcion invalida"<<endl;
 		}
-		M.close();
-	}
-	else if(opc==2)
+	
+	}while(opc!=3);
+}
+void LSE::Crea_Am(char *x)
+{
+	ofstream M;
+	char *mar;
+	mar=new char[strlen(x)+1];
+	strcpy(mar,x);
+	Nodo *xl=Inicio;
+	M.open("F:/Autos_por_marcas.txt");
+	while(xl!=NULL)
 	{
-		int x=0;
-		cout<<"Coloque el año de los autos: ";cin>>x;
+		if(strcmp(mar,xl->ObtieneM())==0)
+			M<<xl->ObtieneM()<<"\t"<<xl->ObtieneSm()<<"\t"<<xl->ObtieneMo()<<"\t"<<xl->ObtieneCa()<<"\t"<<xl->ObtieneCi()<<"\t"<<xl->ObtieneT()<<"\t"<<xl->ObtieneC()<<endl;
+		xl=xl->ObtieneSig();
+	}
+	cout<<"Se creo el archivo."<<endl;
+	M.close();
+}
+void LSE::Crea_Aac(int x,int y)
+{
+	ofstream A,C; 
+	if(y==2)
+	{	
 		Nodo *xl2=Inicio;
-		A.open("F:/Autos_por_año.txt");
+		A.open("F:/Autos_por_modelo.txt");
 		while(xl2!=NULL)
-		{
-			if(xl2->ObtieneMo()==x)
-			{
-				A<<xl2->ObtieneM()<<"\t"<<xl2->ObtieneSm()<<"\t"<<xl2->ObtieneMo()<<"\t"<<xl2->ObtieneCa()<<"\t"<<xl2->ObtieneCi()<<"\t"<<xl2->ObtieneT()<<"\t"<<xl2->ObtieneC()<<endl;
-				xl2=xl2->ObtieneSig();
-			}
+  		{	if(xl2->ObtieneMo()==x)
+	  			A<<xl2->ObtieneM()<<"\t"<<xl2->ObtieneSm()<<"\t"<<xl2->ObtieneMo()<<"\t"<<xl2->ObtieneCa()<<"\t"<<xl2->ObtieneCi()<<"\t"<<xl2->ObtieneT()<<"\t"<<xl2->ObtieneC()<<endl;
+			xl2=xl2->ObtieneSig();
 		}
-		A.close();
+		cout<<"Se creo el archivo."<<endl;
+		A.close();	
 	}
-	else if(opc==3)
-	{
-		int y=0;
-		cout<<"Coloque el numero de cilindros: ";cin>>y;
-		Nodo *xl4;
+	else
+	{	Nodo *xl4=Inicio;
 		C.open("F:/Autos_por_cilindros.txt");
 		while(xl4!=NULL)
-		{
-			if(xl4->ObtieneCi()==y)
-			{
-				C<<xl4->ObtieneM()<<"\t"<<xl4->ObtieneSm()<<"\t"<<xl4->ObtieneMo()<<"\t"<<xl4->ObtieneCa()<<"\t"<<xl4->ObtieneCi()<<"\t"<<xl4->ObtieneT()<<"\t"<<xl4->ObtieneC()<<endl;
-				xl4=xl4->ObtieneSig();
-			}
+  		{	if(xl4->ObtieneCi()==x)
+	  			C<<xl4->ObtieneM()<<"\t"<<xl4->ObtieneSm()<<"\t"<<xl4->ObtieneMo()<<"\t"<<xl4->ObtieneCa()<<"\t"<<xl4->ObtieneCi()<<"\t"<<xl4->ObtieneT()<<"\t"<<xl4->ObtieneC()<<endl;
+			xl4=xl4->ObtieneSig();
 		}
+		cout<<"Se creo el archivo."<<endl;
 		C.close();
 	}
+  	
 }
 void LSE::editar()
 {
 	char m[15];
-	cout<<"Coloque el nombre de la marca ";cin>>m;
-	m=new char [strlen(m)+1];
-	
+	fflush(stdin);
+	cout<<"Coloque el nombre de la marca ";cin.getline(m,14);
+	Nodo *Edit=Buscar(m);
+	if(Edit==NULL)
+	{
+		cout<<"No se encontro el dato"<<endl;
+	}
+	else
+	{
+		system("cls");
+		cout<<"Dato(s) encontrado(s)"<<endl;
+		Edit->Imprimir();
+		cout<<endl<<"Ingrese los nuevos datos: "<<endl;
+		Edit->Leer();
+	}
+}
+Nodo *LSE::BuscarN(int x)
+{
+	Nodo *Bn=Inicio;
+	int i=1;
+	if(x>Contar()||x<=0)
+	{
+		Bn=NULL;
+	}
+	else
+	{
+		while(i!=x)
+		{
+			Bn=Bn->ObtieneSig();
+			i++;
+		}
+	}
+	return Bn;
+}
+Nodo *LSE::Buscar(char *x)
+{
+	Nodo *Bus=Inicio;
+	char *mar;
+	int i=1,j=0,opc=0;
+	mar=new char[strlen(x)+1];
+	strcpy(mar,x);
+	if(Inicio)
+	{
+		while(Bus!=NULL)
+		{
+			if(strcmp(mar,Bus->ObtieneM())==0)
+			{
+				cout<<i<<" )";
+				Bus->Imprimir();
+				i++;j++;
+			}
+			else i++;
+			Bus=Bus->ObtieneSig();
+		}
+		if(j==0) cout<<"No se encontro el dato. "<<endl;
+		else
+		{
+			cout<<"Teclee el numero del dato a editar: ";cin>>opc;
+			Bus=BuscarN(opc);
+			return Bus;
+		}
+	}
+	return Bus;
 }
 void LSE::Imprimir()
 {
@@ -317,7 +407,7 @@ class Archivo
 	public:
 		void InicializarLec();
 		void InicializarEsc();
-		void LeerA();
+		void LeerA(LSE&);
 		void Finalizar();
 };
 void Archivo::InicializarLec()
@@ -332,9 +422,10 @@ void Archivo::InicializarLec()
 	cout<<"Se encontro el archivo"<<endl;
 	system("pause>null");
 }
-void Archivo::LeerA()
+void Archivo::LeerA(LSE &V)
 {
 	int year=0,cil=0;
+	char *m,*sm,*c,*tr,*co;
 	while(!A.eof())
 	{
 		char M[20],Sm[20],Mo[20],C[20],Cil[20],Tr[20],Co[20];
@@ -345,9 +436,19 @@ void Archivo::LeerA()
 		A.getline(Cil,20,'\t');
 		A.getline(Tr,20,'\t');
 		A.getline(Co,20);
+		m=new char[strlen(M)+1];
+		strcpy(m,M);
+		sm=new char[strlen(Sm)+1];
+		strcpy(sm,Sm);
+		c=new char[strlen(C)+1];
+		strcpy(c,C);
+		co=new char[strlen(Co)+1];
+		strcpy(co,Co);
+		tr=new char[strlen(Tr)+1];
+		strcpy(tr,Tr);
 		year=atoi(Mo);
 		cil=atoi(Cil);
-		cout<<M<<"\t"<<Sm<<"\t"<<year<<"\t"<<C<<"\t"<<cil<<"\t"<<Tr<<"\t"<<Co<<"\t"<<endl;
+		V.InsertarF(m,sm,c,co,tr,year,cil);
 	}
 }
 void Archivo::Finalizar()
@@ -362,7 +463,6 @@ int main()
 	int opc=0;
 	do
 	{
-		system("cls");
 		cout<<"1) Cargar archivo .txt"<<endl;
 		cout<<"2) Insertar Inicio"<<endl;
 		cout<<"3) Insertar final"<<endl;
@@ -377,14 +477,15 @@ int main()
 		{
 			case 1:
 				A.InicializarLec();
-				A.LeerA();
-				system("pause>null");
+				A.LeerA(B);
 				break;
 			case 2:
+				C.Leer();
 				B.InsertarI(C.ObtieneM(),C.ObtieneSm(),C.ObtieneCa(),C.ObtieneT(),C.ObtieneC(),C.ObtieneMo(),C.ObtieneCi());
 				system("pause>null");
 				break;
 			case 3:
+				C.Leer();
 				B.InsertarF(C.ObtieneM(),C.ObtieneSm(),C.ObtieneCa(),C.ObtieneT(),C.ObtieneC(),C.ObtieneMo(),C.ObtieneCi());
 				system("pause>null");
 				break;
@@ -416,6 +517,7 @@ int main()
 				cout<<"Opcion invalida."<<endl;
 				break;
 		}
+		system("cls");
 	}while(opc!=9);
 	system("pause>null");
 	return 0;
