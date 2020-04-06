@@ -34,6 +34,40 @@ public:
     Nodo *Obtieneant();
     int Obtienedato();
 };
+void Nodo::Asignasig(Nodo *x)
+{
+    this->sig=x;
+}
+void Nodo::Asignaant(Nodo *x)
+{
+    this->ant=x;
+}
+
+
+void Nodo::Leer(int x)
+{
+    this->dato=x;
+}
+void Nodo::Imprimir()
+{
+    cout<<this->dato<<endl;
+}
+Nodo* Nodo::Obtienesig()
+{
+    return(this->sig);
+}
+
+Nodo* Nodo::Obtieneant()
+{
+    return(this->ant);
+}
+
+
+int Nodo::Obtienedato()
+{
+    return(this->dato);
+}
+
 class LDE
 {    private:
     Nodo *Inicio, *Fin;
@@ -55,7 +89,6 @@ public:
     }
     
 };
-
 
 void LDE::InsertarI(int x)
 {
@@ -88,7 +121,6 @@ void LDE::InsertarF(int x)
         Fin=helpx2;
     }
 }
-
 void LDE::BorrarI()
 {
     if(!Inicio)
@@ -133,8 +165,6 @@ void LDE::BorrarF()
         }
      }
 }
-
-
 void LDE::Imprimir()
 {
     if(Inicio==NULL)
@@ -148,9 +178,6 @@ void LDE::Imprimir()
         }
     }
 }
-
-
-
 void LDE::ImprimirR()
 {
     if(Inicio==NULL)
@@ -164,9 +191,6 @@ void LDE::ImprimirR()
         }
     }
 }
-
-
-
 int LDE::Contar()
 {    int ESCA=0;
     if(!Inicio)
@@ -182,7 +206,6 @@ int LDE::Contar()
     }
     return ESCA;
 }
-
 Nodo* LDE::Buscar(int x)
 {
     Nodo *covid=Inicio;
@@ -222,52 +245,6 @@ void LDE::Borrar(int x)
         }
     }
 }
-
-
-
-
-
-
-
-
-
-void Nodo::Asignasig(Nodo *x)
-{
-    this->sig=x;
-}
-void Nodo::Asignaant(Nodo *x)
-{
-    this->ant=x;
-}
-
-
-void Nodo::Leer(int x)
-{
-    this->dato=x;
-}
-void Nodo::Imprimir()
-{
-    cout<<this->dato<<endl;
-}
-Nodo* Nodo::Obtienesig()
-{
-    return(this->sig);
-}
-
-Nodo* Nodo::Obtieneant()
-{
-    return(this->ant);
-}
-
-
-int Nodo::Obtienedato()
-{
-    return(this->dato);
-}
-
-
-
-
 
 int main(int argc, const char * argv[])
 {
